@@ -58,7 +58,10 @@ export default function App() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
           >
-            <ExecutiveDashboard onLogout={() => setView("role")} />
+            <ExecutiveDashboard
+              onBack={() => setView("role")}
+              onLogout={() => setView("role")}
+            />
           </motion.div>
         )}
       </AnimatePresence>

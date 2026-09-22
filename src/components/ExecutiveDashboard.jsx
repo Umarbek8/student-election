@@ -10,6 +10,7 @@ import {
   ShieldCheck,
   LockKeyhole,
   Unlock,
+  ArrowLeft,
 } from "lucide-react";
 import { CANDIDATES } from "../data/candidates";
 import { ELECTION_CLOSED_NOTICE } from "../constants";
@@ -124,7 +125,7 @@ function LockToggle({ open, onChange }) {
   );
 }
 
-export default function ExecutiveDashboard({ onLogout }) {
+export default function ExecutiveDashboard({ onLogout, onBack }) {
   const [counts, setCounts] = useState({});
   const [log, setLog] = useState([]);
   const [electionOpen, setLocalElectionOpen] = useState(true);
@@ -188,13 +189,23 @@ export default function ExecutiveDashboard({ onLogout }) {
   return (
     <div className="min-h-screen flex flex-col px-5 sm:px-8 py-6 sm:py-8">
       <header className="flex flex-wrap items-start justify-between gap-4 mb-6">
-        <div>
-          <p className="text-xs text-signal-cyan font-medium flex items-center gap-1.5">
-            <ShieldCheck className="h-3.5 w-3.5" /> Executive dashboard
-          </p>
-          <h1 className="font-display font-bold text-xl sm:text-2xl text-white mt-1">
-            Live election results
-          </h1>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={onBack}
+            aria-label="Back"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-700 bg-slate-900/60 text-slate-300 transition hover:border-signal-cyan/50 hover:text-white"
+          >
+            <ArrowLeft className="h-4 w-4" />
+          </button>
+          <div>
+            <p className="text-xs text-signal-cyan font-medium flex items-center gap-1.5">
+              <ShieldCheck className="h-3.5 w-3.5" /> Executive dashboard
+            </p>
+            <h1 className="font-display font-bold text-xl sm:text-2xl text-white mt-1">
+              Live election results
+            </h1>
+          </div>
         </div>
 
         <div className="flex items-center gap-3">
