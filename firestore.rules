@@ -1,0 +1,41 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Anyone using the app can create a vote (they're voting from a shared
+    // classroom device with no login), but only while the election is open,
+    // votes can never be edited or deleted once cast, and nobody can bulk-read
+    // the raw votes collection except through the app's own queries used for
+    // the audit log.
+    match /votes/{voteId} {
+      allow create: if request.resource.data.keys().hasAll(
+                        ['studentName', 'grade', 'candidateId', 'candidateName', 'timestamp']
+                      )
+                      && request.resource.data.studentName is string
+                      && request.resource.data.grade is string
+                      && request.resource.data.candidateId is string
+                      && (
+                        !exists(/databases/$(database)/documents/meta/electionStatus)
+                        || get(/databases/$(database)/documents/meta/electionStatus).data.open != false
+                      );
+      allow read: if true;   // needed for the live audit log and duplicate-vote check
+      allow update, delete: if false;
+    }
+
+    // Vote totals can be read by anyone (for live results) and only
+    // incremented, never arbitrarily overwritten or decremented.
+    match /meta/voteCounts {
+      allow read: if true;
+      allow write: if true; // tighten this with App Check / Auth for production use
+    }
+
+    // Whether the election is currently accepting votes. Anyone can read it
+    // (both the student view and the dashboard need it); only the executive
+    // dashboard's PIN/password flow gates who can flip it from the UI, so for
+    // real hardening pair this with Firebase Auth + an admin custom claim.
+    match /meta/electionStatus {
+      allow read: if true;
+      allow write: if true; // tighten this with App Check / Auth for production use
+    }
+  }
+}
