@@ -1,17 +1,17 @@
 export const CANDIDATES = [
   {
     id: "cand_1",
-    name: "BINTANG & HASAN",
+    name: "BIMA & ZAKI",
     grade: "Paslon 01",
     number: "01",
     image: "/candidates/paslon01.jpg",
   },
   {
     id: "cand_2",
-    name: "ZAHRA & RIZAL",
+    name: "AESAR & RIDA",
     grade: "Paslon 02",
     number: "02",
-    image: "/candidates/paslon02.png",
+    image: "/candidates/paslon02.jpg",
   },
 ];
 
